@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ALLEN Digital — Support Chat Widget</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Inter', -apple-system, sans-serif; color: #1B1F2B; }
+
+  /* ============================================================
+     "ALLEN.IN" STYLE HOMEPAGE — a wireframe/mockup, not a copy.
+     Direct fetch of allen.in was blocked from this environment,
+     so this is built from ALLEN's public brand colors (navy +
+     gold, confirmed via their public logo assets) and standard
+     ed-tech homepage patterns — original layout and copy, meant
+     to give the chat widget a realistic home to sit on. Swap in
+     real copy, stats, and the actual logo file before shipping.
+     Stat numbers below are illustrative placeholders.
+     ============================================================ */
+  :root {
+    --ap-navy: #183883;
+    --ap-navy-dark: #0F2557;
+    --ap-gold: #F8C301;
+    --ap-cream: #FDF8EC;
+    --ap-ink: #1B1F2B;
+    --ap-ink-soft: #5B6172;
+    --ap-line: #E6E2D6;
+    --ap-display: 'Fraunces', Georgia, serif;
+    --ap-body: 'Inter', -apple-system, sans-serif;
+  }
+
+  .ap-topbar {
+    background: var(--ap-gold); color: var(--ap-navy-dark);
+    font-size: 12.5px; font-weight: 600; text-align: center;
+    padding: 7px 16px;
+  }
+
+  .ap-nav {
+    background: #fff; border-bottom: 1px solid var(--ap-line);
+    padding: 14px 32px; display: flex; align-items: center; gap: 28px;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .ap-logo {
+    font-family: var(--ap-display); font-weight: 700; font-size: 23px;
+    color: var(--ap-navy); letter-spacing: 0.5px; margin-right: auto;
+    border-bottom: 3px solid var(--ap-gold); padding-bottom: 2px;
+  }
+  .ap-nav a {
+    color: var(--ap-ink); text-decoration: none; font-size: 14px; font-weight: 500;
+  }
+  .ap-nav a:hover { color: var(--ap-navy); }
+  .ap-nav-links { display: flex; gap: 24px; }
+  .ap-enroll-btn {
+    background: var(--ap-navy); color: #fff; border: none; padding: 10px 20px;
+    border-radius: 999px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  }
+
+  .ap-hero {
+    background: linear-gradient(180deg, var(--ap-cream) 0%, #fff 100%);
+    padding: 64px 32px 56px;
+    display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px;
+    align-items: center; max-width: 1180px; margin: 0 auto;
+  }
+  .ap-eyebrow {
+    color: var(--ap-navy); font-weight: 700; font-size: 12.5px;
+    letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .ap-hero h1 {
+    font-family: var(--ap-display); font-size: 42px; line-height: 1.12;
+    color: var(--ap-navy-dark); margin: 0 0 16px; font-weight: 600;
+  }
+  .ap-hero p {
+    font-size: 16px; line-height: 1.6; color: var(--ap-ink-soft);
+    max-width: 460px; margin: 0 0 28px;
+  }
+  .ap-cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .ap-btn-primary, .ap-btn-secondary {
+    font-size: 14.5px; font-weight: 600; padding: 13px 24px; border-radius: 999px;
+    cursor: pointer; border: 2px solid transparent;
+  }
+  .ap-btn-primary { background: var(--ap-gold); color: var(--ap-navy-dark); }
+  .ap-btn-secondary { background: transparent; color: var(--ap-navy); border-color: var(--ap-navy); }
+
+  .ap-hero-card {
+    background: #fff; border: 1px solid var(--ap-line); border-radius: 16px;
+    padding: 22px; box-shadow: 0 20px 40px rgba(15, 37, 87, 0.08);
+  }
+  .ap-hero-card h3 {
+    font-family: var(--ap-display); font-size: 16px; margin: 0 0 4px; color: var(--ap-navy-dark);
+  }
+  .ap-hero-card > span { font-size: 12.5px; color: var(--ap-ink-soft); }
+  .ap-hero-row {
+    display: flex; align-items: center; gap: 12px; padding: 12px 0;
+    border-top: 1px solid var(--ap-line);
+  }
+  .ap-hero-row .ap-icon {
+    width: 34px; height: 34px; border-radius: 9px; background: var(--ap-cream);
+    display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0;
+  }
+  .ap-hero-row strong { display: block; font-size: 13.5px; }
+  .ap-hero-row span { font-size: 12px; color: var(--ap-ink-soft); }
+
+  .ap-stats {
+    background: var(--ap-navy); color: #fff;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    padding: 28px 32px; gap: 16px; max-width: 1180px; margin: 0 auto;
+  }
+  .ap-stats div b {
+    font-family: var(--ap-display); font-size: 24px; display: block; color: var(--ap-gold);
+  }
+  .ap-stats div span { font-size: 12px; color: rgba(255,255,255,0.75); }
+
+  .ap-courses { max-width: 1180px; margin: 0 auto; padding: 56px 32px; }
+  .ap-courses h2 {
+    font-family: var(--ap-display); font-size: 26px; color: var(--ap-navy-dark);
+    margin: 0 0 28px; text-align: center;
+  }
+  .ap-course-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .ap-course-card {
+    border: 1px solid var(--ap-line); border-radius: 14px; padding: 22px;
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .ap-course-card:hover { box-shadow: 0 12px 28px rgba(15,37,87,0.1); transform: translateY(-2px); }
+  .ap-course-card .ap-icon {
+    width: 42px; height: 42px; border-radius: 10px; background: var(--ap-cream);
+    display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 14px;
+  }
+  .ap-course-card h4 { font-size: 15px; margin: 0 0 6px; color: var(--ap-navy-dark); }
+  .ap-course-card p { font-size: 13px; color: var(--ap-ink-soft); line-height: 1.5; margin: 0 0 12px; }
+  .ap-course-card a { font-size: 13px; font-weight: 600; color: var(--ap-navy); text-decoration: none; }
+
+  .ap-footer { background: #0F1424; color: rgba(255,255,255,0.65); padding: 48px 32px 24px; }
+  .ap-footer-grid {
+    max-width: 1180px; margin: 0 auto; display: grid;
+    grid-template-columns: repeat(4, 1fr); gap: 32px; padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .ap-footer-grid h5 { color: #fff; font-size: 13px; margin: 0 0 12px; }
+  .ap-footer-grid a { display: block; color: rgba(255,255,255,0.6); font-size: 13px; text-decoration: none; margin-bottom: 8px; }
+  .ap-footer-bottom { max-width: 1180px; margin: 16px auto 0; font-size: 12px; }
+
+  @media (max-width: 860px) {
+    .ap-hero { grid-template-columns: 1fr; padding: 40px 20px; }
+    .ap-stats, .ap-course-grid, .ap-footer-grid { grid-template-columns: repeat(2, 1fr); }
+    .ap-nav-links { display: none; }
+  }
+
+  /* ============================================================
+     WIDGET — copy the <style> contents, the #cw-root markup, and
+     the <script> block into your site to embed. Everything is
+     scoped under cw- / #cw-root so it won't collide with host
+     page styles.
+     ============================================================ */
+  #cw-root, #cw-root *, #cw-root *::before, #cw-root *::after {
+    box-sizing: border-box;
+  }
+
+  #cw-root {
+    --cw-primary: #183883;       /* ALLEN Navy */
+    --cw-primary-dark: #0F2557;
+    --cw-accent: #F8C301;        /* ALLEN Gold */
+    --cw-bg: #F4F6FB;
+    --cw-cloud: #FFFFFF;
+    --cw-ink: #1B1F2B;
+    --cw-ink-soft: #6B7280;
+    --cw-font-display: 'Fraunces', Georgia, serif;
+    --cw-font-body: 'Inter', -apple-system, sans-serif;
+
+    position: fixed;
+    inset: auto 0 0 auto;
+    z-index: 999999;
+    font-family: var(--cw-font-body);
+  }
+
+  #cw-launcher {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    width: 60px; height: 60px;
+    border: none;
+    border-radius: 10px 30px 30px 30px;
+    background: var(--cw-primary);
+    box-shadow: 0 10px 24px rgba(22, 33, 62, 0.35);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.18s ease, border-radius 0.18s ease, box-shadow 0.18s ease;
+  }
+  #cw-launcher:hover { transform: scale(1.06); box-shadow: 0 12px 28px rgba(22, 33, 62, 0.45); }
+  #cw-launcher:focus-visible { outline: 3px solid var(--cw-accent); outline-offset: 3px; }
+  #cw-launcher svg { position: absolute; transition: opacity 0.15s ease, transform 0.2s ease; }
+  #cw-launcher .cw-icon-close { opacity: 0; transform: rotate(-45deg) scale(0.6); }
+  #cw-launcher .cw-icon-chat { opacity: 1; transform: rotate(0) scale(1); }
+  #cw-root.cw-is-open #cw-launcher { border-radius: 50%; }
+  #cw-root.cw-is-open #cw-launcher .cw-icon-chat { opacity: 0; transform: rotate(45deg) scale(0.6); }
+  #cw-root.cw-is-open #cw-launcher .cw-icon-close { opacity: 1; transform: rotate(0) scale(1); }
+
+  #cw-badge {
+    position: absolute; top: -3px; right: -3px;
+    width: 19px; height: 19px; border-radius: 50%;
+    background: var(--cw-accent); color: var(--cw-primary-dark);
+    font-size: 11px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--cw-bg);
+    animation: cw-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes cw-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+
+  #cw-proactive {
+    position: fixed; bottom: 96px; right: 24px;
+    max-width: 230px;
+    background: var(--cw-cloud);
+    border-radius: 16px 16px 4px 16px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    padding: 12px 14px;
+    font-size: 13.5px; line-height: 1.5; color: var(--cw-ink);
+    display: flex; align-items: flex-start; gap: 8px;
+    cursor: pointer;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+  #cw-proactive.cw-show { opacity: 1; transform: translateY(0); }
+  #cw-proactive button {
+    border: none; background: none; color: var(--cw-ink-soft);
+    font-size: 15px; line-height: 1; cursor: pointer; padding: 2px; flex-shrink: 0;
+  }
+
+  #cw-panel {
+    position: fixed; bottom: 96px; right: 24px;
+    width: 374px; max-width: calc(100vw - 32px);
+    height: 560px; max-height: calc(100vh - 120px);
+    background: var(--cw-bg);
+    border-radius: 10px 26px 26px 26px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.22);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    transform-origin: bottom right;
+    transform: scale(0.9) translateY(12px);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  #cw-panel.cw-open { transform: scale(1) translateY(0); opacity: 1; pointer-events: auto; }
+
+  #cw-header {
+    background: var(--cw-primary); color: #fff;
+    padding: 16px 16px 16px 18px;
+    display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+  }
+  #cw-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--cw-accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+  }
+  #cw-header-text { flex: 1; min-width: 0; }
+  #cw-header-text h2 {
+    font-family: var(--cw-font-display); font-weight: 600; font-size: 16.5px; margin: 0 0 2px;
+  }
+  #cw-status { font-size: 12px; color: rgba(255,255,255,0.85); display: flex; align-items: center; gap: 5px; }
+  #cw-status .cw-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #6FE2A0;
+    animation: cw-pulse 2s ease-in-out infinite;
+  }
+  #cw-close {
+    border: none; background: rgba(255,255,255,0.12); color: #fff;
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0; transition: background 0.15s ease;
+  }
+  #cw-close:hover { background: rgba(255,255,255,0.22); }
+  #cw-close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+  #cw-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .cw-msg { max-width: 84%; padding: 10px 14px; border-radius: 16px; font-size: 13.8px; line-height: 1.48; }
+  .cw-msg-bot {
+    align-self: flex-start; background: var(--cw-cloud); color: var(--cw-ink);
+    border-bottom-left-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  .cw-msg-user { align-self: flex-end; background: var(--cw-primary); color: #fff; border-bottom-right-radius: 4px; }
+  .cw-typing { display: flex; gap: 4px; padding: 13px 16px; align-items: center; }
+  .cw-typing span {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--cw-ink-soft);
+    animation: cw-bounce 1.1s ease-in-out infinite;
+  }
+  .cw-typing span:nth-child(2) { animation-delay: 0.15s; }
+  .cw-typing span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes cw-bounce { 0%,60%,100% { transform: translateY(0); opacity: 0.5; } 30% { transform: translateY(-4px); opacity: 1; } }
+
+  #cw-quick { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 14px; flex-shrink: 0; }
+  .cw-chip {
+    border: 1px solid var(--cw-primary); background: var(--cw-cloud);
+    color: var(--cw-primary); font-family: var(--cw-font-body);
+    font-size: 12.5px; font-weight: 500; padding: 7px 13px;
+    border-radius: 999px; cursor: pointer; transition: background 0.15s ease, color 0.15s ease;
+  }
+  .cw-chip:hover { background: var(--cw-primary); color: #fff; }
+  .cw-chip:focus-visible { outline: 2px solid var(--cw-accent); outline-offset: 2px; }
+
+  #cw-form {
+    border-top: 1px solid rgba(0,0,0,0.07); background: var(--cw-cloud);
+    padding: 12px 14px; display: flex; gap: 8px; flex-shrink: 0;
+  }
+  #cw-input {
+    flex: 1; border: 1px solid #DADFEA; border-radius: 999px;
+    padding: 10px 16px; font-size: 14px; font-family: var(--cw-font-body);
+    color: var(--cw-ink); outline: none; min-width: 0;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  #cw-input:focus { border-color: var(--cw-accent); box-shadow: 0 0 0 3px rgba(248,195,1,0.25); }
+  #cw-send {
+    width: 40px; height: 40px; border-radius: 50%; border: none;
+    background: var(--cw-accent); color: var(--cw-primary-dark); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: transform 0.12s ease, opacity 0.12s ease;
+  }
+  #cw-send:hover:not(:disabled) { transform: scale(1.06); }
+  #cw-send:disabled { opacity: 0.4; cursor: not-allowed; }
+  #cw-send:focus-visible { outline: 2px solid var(--cw-primary); outline-offset: 2px; }
+
+  @media (max-width: 420px) {
+    #cw-panel { right: 16px; bottom: 88px; width: calc(100vw - 32px); }
+    #cw-launcher, #cw-proactive { right: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #cw-badge, #cw-status .cw-dot, .cw-typing span { animation: none; }
+    #cw-panel, #cw-proactive, #cw-launcher, #cw-launcher svg { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== "allen.in"-style homepage backdrop — delete on embed, keep only the #cw-root section below ===== -->
+<div class="ap-topbar">📞 Admissions Open — NEET &amp; JEE 2026-27 Batches · Call 1800-XXX-XXXX</div>
+
+<nav class="ap-nav">
+  <div class="ap-logo">ALLEN</div>
+  <div class="ap-nav-links">
+    <a href="#">NEET</a>
+    <a href="#">JEE</a>
+    <a href="#">Foundation</a>
+    <a href="#">ALLEN Digital</a>
+    <a href="#">Test Series</a>
+    <a href="#">Login</a>
+  </div>
+  <button class="ap-enroll-btn" type="button">Enroll Now</button>
+</nav>
+
+<header class="ap-hero">
+  <div>
+    <div class="ap-eyebrow">ALLEN Digital</div>
+    <h1>Coaching that meets you wherever you study.</h1>
+    <p>Live classes, structured test series, and dedicated support for NEET, JEE, and Foundation batches — all in one app.</p>
+    <div class="ap-cta-row">
+      <button class="ap-btn-primary" type="button" onclick="window.location.href='https://allen.in/'">
+    Explore Courses
+</button>
+      <button class="ap-btn-secondary" type="button" id="ap-talk-advisor">Talk to an Advisor</button>
+    </div>
+  </div>
+  <div class="ap-hero-card">
+    <h3>2026-27 Batches</h3>
+    <span>What you get with ALLEN Digital</span>
+    <div class="ap-hero-row">
+      <div class="ap-icon">🎥</div>
+      <div><strong>Live + Recorded Classes</strong><span>Catch up anytime, anywhere</span></div>
+    </div>
+    <div class="ap-hero-row">
+      <div class="ap-icon">📝</div>
+      <div><strong>All-India Test Series</strong><span>Track your rank against peers</span></div>
+    </div>
+    <div class="ap-hero-row">
+      <div class="ap-icon">💬</div>
+      <div><strong>24×7 Doubt Support</strong><span>Get help the moment you're stuck</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="ap-stats">
+  <div><b>Est. 1988</b><span>Kota, Rajasthan</span></div>
+  <div><b>Pan-India</b><span>Centres &amp; digital reach</span></div>
+  <div><b>NEET · JEE</b><span>Foundation programs</span></div>
+  <div><b>24×7</b><span>Doubt support</span></div>
+</section>
+
+<section class="ap-courses">
+  <h2>Choose your path</h2>
+  <div class="ap-course-grid">
+    <div class="ap-course-card">
+      <div class="ap-icon">⚙️</div>
+      <h4>JEE Main &amp; Advanced</h4>
+      <p>Structured prep for engineering aspirants, from foundation to advanced problem-solving.</p>
+      <a href="#">View batches →</a>
+    </div>
+    <div class="ap-course-card">
+      <div class="ap-icon">🩺</div>
+      <h4>NEET (UG)</h4>
+      <p>Biology, Physics, and Chemistry coaching built around the NEET exam pattern.</p>
+      <a href="#">View batches →</a>
+    </div>
+    <div class="ap-course-card">
+      <div class="ap-icon">📘</div>
+      <h4>Foundation (9–10)</h4>
+      <p>Build strong fundamentals early for board exams and future competitive prep.</p>
+      <a href="#">View batches →</a>
+    </div>
+    <div class="ap-course-card">
+      <div class="ap-icon">📱</div>
+      <h4>ALLEN Digital</h4>
+      <p>The full classroom experience on your phone — classes, tests, and material.</p>
+      <a href="#">View batches →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="ap-footer">
+  <div class="ap-footer-grid">
+    <div><h5>Programs</h5><a href="#">NEET</a><a href="#">JEE</a><a href="#">Foundation</a><a href="#">ALLEN Digital</a></div>
+    <div><h5>Company</h5><a href="#">About Us</a><a href="#">Centres</a><a href="#">Results</a><a href="#">Careers</a></div>
+    <div><h5>Support</h5><a href="#">Help Center</a><a href="#">Contact Us</a><a href="#">Refund Policy</a></div>
+    <div><h5>Legal</h5><a href="#">Terms</a><a href="#">Privacy Policy</a></div>
+  </div>
+  <div class="ap-footer-bottom">© 2026 ALLEN Career Institute — wireframe mockup for internal review, not the live site.</div>
+</footer>
+
+<!-- ===== WIDGET MARKUP — copy from here down ===== -->
+<div id="cw-root">
+
+  <div id="cw-proactive" role="status" hidden>
+    <span>Stuck on a class or test? 👋</span>
+    <button type="button" id="cw-proactive-close" aria-label="Dismiss">&times;</button>
+  </div>
+
+  <button id="cw-launcher" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Open support chat">
+    <svg class="cw-icon-chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+    <svg class="cw-icon-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+    <span id="cw-badge" hidden>1</span>
+  </button>
+
+  <div id="cw-panel" role="dialog" aria-labelledby="cw-title" hidden>
+    <div id="cw-header">
+      <div id="cw-avatar" aria-hidden="true">🎓</div>
+      <div id="cw-header-text">
+        <h2 id="cw-title">ALLEN Digital Support</h2>
+        <div id="cw-status"><span class="cw-dot" aria-hidden="true"></span>Online now</div>
+      </div>
+      <button id="cw-close" type="button" aria-label="Close chat">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div id="cw-messages" role="log" aria-live="polite"></div>
+    <div id="cw-quick"></div>
+
+    <form id="cw-form" autocomplete="off">
+      <input id="cw-input" type="text" placeholder="Type your message…" aria-label="Message">
+      <button id="cw-send" type="submit" disabled aria-label="Send message">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.getElementById('cw-root');
+  var launcher = document.getElementById('cw-launcher');
+  var panel = document.getElementById('cw-panel');
+  var closeBtn = document.getElementById('cw-close');
+  var messagesEl = document.getElementById('cw-messages');
+  var quickRow = document.getElementById('cw-quick');
+  var form = document.getElementById('cw-form');
+  var input = document.getElementById('cw-input');
+  var sendBtn = document.getElementById('cw-send');
+  var badge = document.getElementById('cw-badge');
+  var proactive = document.getElementById('cw-proactive');
+  var proactiveClose = document.getElementById('cw-proactive-close');
+
+  var isOpen = false;
+  var currentNode = 'root';
+
+  /* ============================================================
+     CONVERSATION FLOW — mirrors the support sheet categories:
+     Live Class, Test, Study Material, Course Related, Account
+     Related. See node comments for category-specific notes.
+
+     Node shape:
+       bot      — array of bot message strings, shown in sequence
+       escalate — (optional) team name; appends a simulated ticket
+       collect  — (optional) true if this node is waiting on the
+                  student to type free-form info (order ID,
+                  address, new number, etc.) rather than tap a chip
+       options  — chips shown once the bot finishes "responding"
+
+     None of this is wired to a real backend or ticketing system —
+     see ticketMessage() for where to plug in the real API call.
+
+     OPEN ITEMS carried over from the sheet, not yet decided, so
+     not hard-coded here:
+       Live Class / Test:
+         - SLA for batch allocation before auto-escalating (24h used below)
+         - Escalation trigger time for "today's class not visible" (15 min used below)
+         - Ownership split between Product Ops and Support Team for dropped-class escalations
+         - Auto-create in Salesforce vs. route internally
+         - Troubleshooting content for BOS / Polls / Audio / Video / Hand Raise
+         - Reattempt eligibility criteria + approval authority
+       Study Material:
+         - Standard dispatch TAT to define "expected" vs "delayed", and what to tell students on RTO
+         - "Still delayed" follow-up threshold, and who calls (Support Agent vs Logistics)
+         - Whether photo upload is needed for damaged-book proof; separate sub-flows for damaged/missing/wrong
+         - Whether address/phone changes need proof or verification beyond student confirmation
+       Course Related:
+         - Full course-change policy content and eligibility window
+       Account Related:
+         - Exact accepted documents and TAT per change type (name, email, mobile, parent details, DOB)
+         - Verification method (OTP to old/new contact?) for each change type
+         - Whether "Shipping Address Change" here is the same flow as the Study Material delivery
+           address change, or a separate permanent profile address (the bot below asks the student
+           to clarify rather than assuming)
+         - Refund flow: does the bot only share the policy, or also initiate a request? (interpreted
+           below as "also initiate," pending confirmation)
+     ============================================================ */
+  var flow = {
+    root: {
+      bot: ["Hi! I'm ALLEN Digital Support 🎓 What can I help you with today?"],
+      options: [
+        { label: "Live Class", next: "lc_menu" },
+        { label: "Tests", next: "t_menu" },
+        { label: "Study Material", next: "sm_menu" },
+        { label: "Course", next: "course_menu" },
+        { label: "My Account", next: "account_menu" },
+        { label: "Talk to a person", next: "human" }
+      ]
+    },
+
+    /* ---------------- Live Class ---------------- */
+    lc_menu: {
+      bot: ["Which Live Class issue are you facing?"],
+      options: [
+        { label: "Class Schedule", next: "lc_sched_q1" },
+        { label: "Unable to Join Class", next: "lc_join_q1" },
+        { label: "Today's Class Not Visible", next: "lc_nv_q1" },
+        { label: "Getting Dropped from Class", next: "lc_drop_q1" },
+        { label: "Issues During Class (Polls / Audio / Video)", next: "lc_issue_menu" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    lc_sched_q1: {
+      bot: ["When did you purchase this course?"],
+      options: [
+        { label: "Within the last 24 hours", next: "lc_sched_recent" },
+        { label: "More than 24 hours ago", next: "lc_sched_old" }
+      ]
+    },
+    lc_sched_recent: {
+      bot: ["Has your batch been allocated yet? You can check under Explore → Schedule."],
+      options: [
+        { label: "Not allocated yet", next: "lc_sched_s1" },
+        { label: "Yes, it's allocated", next: "lc_sched_q3" }
+      ]
+    },
+    lc_sched_old: {
+      bot: ["Has your batch been allocated? Check under Explore → Schedule."],
+      options: [
+        { label: "Still not allocated", next: "lc_sched_s3" },
+        { label: "Yes, it's allocated", next: "lc_sched_q3" }
+      ]
+    },
+    lc_sched_q3: {
+      bot: ["Do you see any classes listed there?"],
+      options: [
+        { label: "Yes, classes are listed", next: "lc_sched_s2" },
+        { label: "No classes shown", next: "lc_sched_s4" }
+      ]
+    },
+    lc_sched_s1: {
+      bot: ["You recently purchased this course. Batch allocation may take up to 24 hours. Once allocated, your class schedule will appear under Explore → Schedule."],
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    lc_sched_s2: {
+      bot: ["Your batch has been successfully allocated. Please navigate to Explore → Schedule to view your upcoming classes."],
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    lc_sched_s3: {
+      bot: ["We found that your batch has not yet been allocated. Our team will review this and assist you shortly."],
+      escalate: "Academic Operations / Batch Allocation Team",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    lc_sched_s4: {
+      bot: ["Your batch is allocated, but no classes are currently scheduled. Please check again later or contact support for assistance."],
+      escalate: "Academic Planning Team",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    lc_join_q1: {
+      bot: ["Is your internet connection stable right now?"],
+      options: [
+        { label: "It's unstable / having issues", next: "lc_join_net" },
+        { label: "Yes, it's stable", next: "lc_join_steps" }
+      ]
+    },
+    lc_join_net: {
+      bot: ["We've detected a network issue. Please switch to a stable Wi-Fi connection and try joining again."],
+      options: [
+        { label: "Still can't join", next: "lc_join_esc" },
+        { label: "That fixed it 🎉", next: "root" }
+      ]
+    },
+    lc_join_steps: {
+      bot: ["Please try the following: (a) refresh the app/page, (b) log out and log back in, (c) update the app, (d) clear cache, (e) try another network or device."],
+      options: [
+        { label: "Still can't join", next: "lc_join_esc" },
+        { label: "That fixed it 🎉", next: "root" }
+      ]
+    },
+    lc_join_esc: {
+      bot: ["Sorry that didn't do it — let's get a teammate on this."],
+      escalate: "Support Agent",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    lc_nv_q1: {
+      bot: ["Do you have a class scheduled for today on your timetable?"],
+      options: [
+        { label: "Yes, I have a class today", next: "lc_nv_yes" },
+        { label: "No class today", next: "lc_nv_no" }
+      ]
+    },
+    lc_nv_yes: {
+      bot: ["A class is scheduled for you today. Please check under Explore → Schedule or Live Classes — it should appear shortly before start time."],
+      options: [
+        { label: "Still not visible 15+ min after start", next: "lc_nv_esc" },
+        { label: "Found it, thanks!", next: "root" }
+      ]
+    },
+    lc_nv_no: {
+      bot: ["No class is scheduled for you today based on our records. Check Explore → Schedule for your next class date."],
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    lc_nv_esc: {
+      bot: ["Thanks for waiting — looping in our team to check this."],
+      escalate: "Academic Operations",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    lc_drop_q1: {
+      bot: ["Is your network connection currently stable?"],
+      options: [
+        { label: "It's unstable", next: "lc_drop_net" },
+        { label: "Network seems fine", next: "lc_drop_steps" }
+      ]
+    },
+    lc_drop_net: {
+      bot: ["Your connection appears unstable. Please switch to a stronger network and rejoin the class."],
+      options: [
+        { label: "Still getting dropped", next: "lc_drop_esc" },
+        { label: "That fixed it 🎉", next: "root" }
+      ]
+    },
+    lc_drop_steps: {
+      bot: ["Please refresh the app, close background applications, update the app, and try joining again."],
+      options: [
+        { label: "Still getting dropped", next: "lc_drop_esc" },
+        { label: "That fixed it 🎉", next: "root" }
+      ]
+    },
+    lc_drop_esc: {
+      bot: ["That shouldn't keep happening — flagging this for deeper investigation."],
+      escalate: "Product Operations / Technical Support",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    lc_issue_menu: {
+      bot: ["Which feature is giving you trouble?"],
+      options: [
+        { label: "Board (BOS)", next: "lc_issue_note" },
+        { label: "Polls", next: "lc_issue_note" },
+        { label: "Audio", next: "lc_issue_note" },
+        { label: "Video", next: "lc_issue_note" },
+        { label: "Hand Raise", next: "lc_issue_note" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    lc_issue_note: {
+      bot: ["Thanks for flagging that — detailed troubleshooting for in-class feature issues is still being finalized on our end. I've logged this as tech feedback for our product team to review."],
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+
+    /* ---------------- Test ---------------- */
+    t_menu: {
+      bot: ["Which Test issue are you facing?"],
+      options: [
+        { label: "Can't See My Test", next: "t_ns_q1" },
+        { label: "Today's Test", next: "t_today" },
+        { label: "Upcoming Test", next: "t_upcoming" },
+        { label: "Previous Tests", next: "t_previous" },
+        { label: "Viewing My Results", next: "t_results" },
+        { label: "Test Auto-Submitted", next: "t_auto" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    t_ns_q1: {
+      bot: ["Has your batch been allocated yet?"],
+      options: [
+        { label: "Not yet allocated", next: "t_ns_notalloc" },
+        { label: "Yes, it's allocated", next: "t_ns_alloc" }
+      ]
+    },
+    t_ns_notalloc: {
+      bot: ["It looks like your batch hasn't been assigned yet. Batch allocation may take some time after enrollment — once assigned, your tests will automatically become visible."],
+      options: [
+        { label: "Still nothing after a day", next: "t_ns_esc1" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    t_ns_esc1: {
+      bot: ["Let's get this checked properly."],
+      escalate: "Academic Operations / Batch Allocation Team",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    t_ns_alloc: {
+      bot: ["Your batch is allocated. Try refreshing the app — if the test still isn't visible, I'll flag it for our team."],
+      options: [
+        { label: "Still not visible", next: "t_ns_esc2" },
+        { label: "Found it, thanks!", next: "root" }
+      ]
+    },
+    t_ns_esc2: {
+      bot: ["Got it, raising this now."],
+      escalate: "Product Operations",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    t_today: {
+      bot: ["To access today's test: 1) open the app or web portal, 2) go to Explore → Tests, 3) select Today's Test, 4) tap Start Test. If you still can't see it, try refreshing and logging in again."],
+      options: [
+        { label: "Still can't find it", next: "t_today_esc" },
+        { label: "Got it, thanks!", next: "root" }
+      ]
+    },
+    t_today_esc: {
+      bot: ["Thanks for confirming — escalating this."],
+      escalate: "Product Operations",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    t_upcoming: {
+      bot: ["You can view upcoming tests under Explore → Tests → Upcoming Tests. Each test unlocks at its scheduled start time."],
+      options: [
+        { label: "It's missing from my schedule", next: "t_upcoming_esc" },
+        { label: "Got it, thanks!", next: "root" }
+      ]
+    },
+    t_upcoming_esc: {
+      bot: ["Thanks — flagging this for our team."],
+      escalate: "Product Operations",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    t_previous: {
+      bot: ["To view previous tests, go to Explore → Tests → Attempted Tests. You'll find your completed tests, scores, and analysis there."],
+      options: [
+        { label: "My previous tests are missing", next: "t_previous_esc" },
+        { label: "Got it, thanks!", next: "root" }
+      ]
+    },
+    t_previous_esc: {
+      bot: ["Thanks — flagging this for our team."],
+      escalate: "Product Operations",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    t_results: {
+      bot: ["You can view your results under Explore → Tests → Attempted Tests → select the test → View Result. If you took a reattempt, both attempts appear once results are published."],
+      options: [
+        { label: "Talk to a support agent", next: "t_results_agent" },
+        { label: "Got it, thanks!", next: "root" }
+      ]
+    },
+    t_results_agent: {
+      bot: ["Connecting you with a support agent for this."],
+      escalate: "Support Agent",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    t_auto: {
+      bot: ["Your test appears to have been automatically submitted. This can happen if the timer expired, the session was inactive for a while, or the test window closed. Your submitted responses will still be evaluated."],
+      options: [
+        { label: "Request a reattempt", next: "t_auto_reattempt" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    t_auto_reattempt: {
+      bot: ["I've logged your reattempt request for review. Our team will validate your eligibility and follow up with you directly."],
+      escalate: "Support Agent — Reattempt Review",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+
+    /* ---------------- Study Material ---------------- */
+    sm_menu: {
+      bot: ["What's the Study Material issue?"],
+      options: [
+        { label: "Books Dispatch Status", next: "sm_dispatch_q1" },
+        { label: "Dispatch Delayed", next: "sm_delayed_q1" },
+        { label: "Damaged / Missing / Wrong Books", next: "sm_other" },
+        { label: "Change Delivery Address", next: "sm_addr_q1" },
+        { label: "Change Delivery Phone Number", next: "sm_phone" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    sm_dispatch_q1: {
+      bot: ["Let's check your books' dispatch status. What does your order currently show?"],
+      options: [
+        { label: "Shipped / Delivered", next: "sm_dispatch_s1" },
+        { label: "Still processing — order is recent", next: "sm_dispatch_s2" },
+        { label: "Still processing — it's been a while", next: "sm_dispatch_s3" }
+      ]
+    },
+    sm_dispatch_s1: {
+      bot: ["Good news — your books are on the way or already delivered. You'll find the courier name, dispatch date, and AWB tracking number under Order History in the app."],
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    sm_dispatch_s2: {
+      bot: ["Your order is being processed. We'll notify you as soon as it's dispatched."],
+      options: [
+        { label: "It's taking longer than expected", next: "sm_dispatch_s3" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    sm_dispatch_s3: {
+      bot: ["Apologies for the delay — escalating this to our team. You'll hear back within 72 hours."],
+      escalate: "Support Agent — Dispatch Feedback",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    sm_delayed_q1: {
+      bot: ["Has your order missed the expected dispatch window?"],
+      options: [
+        { label: "No, still within the window", next: "sm_dispatch_s2" },
+        { label: "Yes, it's overdue", next: "sm_delayed_esc" }
+      ]
+    },
+    sm_delayed_esc: {
+      bot: ["We apologise for the delay. We've escalated this for prioritisation — you'll get an update within 72 hours."],
+      escalate: "Support Agent — Flagged for Prioritisation",
+      options: [
+        { label: "Still no update after 72 hours", next: "sm_delayed_callback" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    sm_delayed_callback: {
+      bot: ["I'm sorry for the continued wait — requesting a direct callback from our logistics team now."],
+      escalate: "Logistics Team — Callback Requested",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    sm_other: {
+      bot: ["Sorry about that — routing you to our team. Please share your Order ID and a brief description of the issue (damaged, missing, or wrong books)."],
+      collect: true,
+      escalate: "Support Agent — Dispatch Issue",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    sm_addr_q1: {
+      bot: ["Has your order been dispatched yet?"],
+      options: [
+        { label: "Not yet dispatched", next: "sm_addr_pre" },
+        { label: "Already dispatched", next: "sm_addr_post" }
+      ]
+    },
+    sm_addr_pre: {
+      bot: ["Please share the updated address: Address Line 1 / Line 2 / City / District / State / PIN."],
+      collect: true,
+      escalate: "Support Ticket — Address Update",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    sm_addr_post: {
+      bot: ["Your books are already dispatched, so we can't redirect this shipment. If it arrives undelivered, share the new address below and we'll arrange redelivery."],
+      collect: true,
+      escalate: "Support Ticket — Address Update (Callback Requested)",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    sm_phone: {
+      bot: ["Please share the number you'd like to update for delivery contact purposes."],
+      collect: true,
+      escalate: "Support Ticket — Delivery Contact Update",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+
+    /* ---------------- Course Related ---------------- */
+    course_menu: {
+      bot: ["What's the course-related issue?"],
+      options: [
+        { label: "Unable to See My Course", next: "course_view_q1" },
+        { label: "Course Change Process", next: "course_change" },
+        { label: "Other Course Issue", next: "course_other" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    course_view_q1: {
+      bot: ["Has your batch been assigned yet?"],
+      options: [
+        { label: "Not assigned yet", next: "course_view_s1" },
+        { label: "Assigned, course still not visible", next: "course_view_s2" }
+      ]
+    },
+    course_view_s1: {
+      bot: ["Your batch is being assigned — this usually takes up to 24 hours."],
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    course_view_s2: {
+      bot: ["Routing you to our support team to look into this."],
+      escalate: "Support Agent",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    course_change: {
+      bot: ["Course changes are handled case-by-case based on eligibility. Connecting you with our L2 team — they'll walk you through the process."],
+      escalate: "L2 Support",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    course_other: {
+      bot: ["Could you share more details about the issue?"],
+      collect: true,
+      escalate: "Support Agent",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+
+    /* ---------------- Account Related ---------------- */
+    account_menu: {
+      bot: ["What would you like to update or ask about?"],
+      options: [
+        { label: "Student Name Change", next: "acc_name" },
+        { label: "Email Address Change", next: "acc_email" },
+        { label: "Student Mobile Number", next: "acc_mobile" },
+        { label: "Parent Mobile Number", next: "acc_parent_mobile" },
+        { label: "Parent Name Change", next: "acc_parent_name" },
+        { label: "Date of Birth Change", next: "acc_dob" },
+        { label: "Shipping Address Change", next: "acc_ship_addr" },
+        { label: "Refund Process", next: "acc_refund" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    acc_name: {
+      bot: ["To update your name, please email support@allen.in with the required ID proof — our team will verify and update it. You're welcome to share details here too and I'll log a ticket."],
+      collect: true,
+      escalate: "Support Ticket — Student Name Change",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    acc_email: {
+      bot: ["To update your registered email, please email support@allen.in from your current registered email with the new one you'd like to use. I can also log this as a ticket if you share the new email here."],
+      collect: true,
+      escalate: "Support Ticket — Email Change",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    acc_mobile: {
+      bot: ["To update your student mobile number, share the new number here and I'll raise a ticket for verification."],
+      collect: true,
+      escalate: "Support Ticket — Student Mobile Change",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    acc_parent_mobile: {
+      bot: ["To update the parent mobile number on file, share the new number here and I'll raise a ticket for verification."],
+      collect: true,
+      escalate: "Support Ticket — Parent Mobile Change",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    acc_parent_name: {
+      bot: ["To update the parent name on file, please share the corrected name — supporting documents may be requested for verification."],
+      collect: true,
+      escalate: "Support Ticket — Parent Name Change",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    acc_dob: {
+      bot: ["Date of birth changes need stronger proof, like Aadhaar or a birth certificate. Please email support@allen.in with the document attached, or share details here and I'll start a ticket."],
+      collect: true,
+      escalate: "Support Ticket — DOB Change",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    acc_ship_addr: {
+      bot: ["This sounds similar to the delivery address update under Study Material — want me to take you there, or is this about your permanent profile address?"],
+      options: [
+        { label: "Take me to delivery address update", next: "sm_addr_q1" },
+        { label: "This is my permanent profile address", next: "acc_ship_addr_profile" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    acc_ship_addr_profile: {
+      bot: ["Got it — share your updated profile address here and I'll log a ticket for our team to update it."],
+      collect: true,
+      escalate: "Support Ticket — Profile Address Change",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+    acc_refund: {
+      bot: ["You can read our refund policy on the Refund Policy page linked in your account settings."],
+      options: [
+        { label: "I'd like to start a refund request", next: "acc_refund_request" },
+        { label: "⬅ Main menu", next: "root" }
+      ]
+    },
+    acc_refund_request: {
+      bot: ["I've noted your interest in a refund. Please share your order ID and reason here, and our team will reach out with next steps."],
+      collect: true,
+      escalate: "Support Agent — Refund Request",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    },
+
+    human: {
+      bot: ["Connecting you with a support agent now. Average wait time is under 2 minutes."],
+      escalate: "Support Agent",
+      options: [{ label: "⬅ Main menu", next: "root" }]
+    }
+  };
+
+  /* ---- UI plumbing ---- */
+  function openPanel() {
+    isOpen = true;
+    panel.hidden = false;
+    requestAnimationFrame(function () { panel.classList.add('cw-open'); });
+    root.classList.add('cw-is-open');
+    launcher.setAttribute('aria-expanded', 'true');
+    launcher.setAttribute('aria-label', 'Close support chat');
+    hideProactive();
+    badge.hidden = true;
+    setTimeout(function () { input.focus(); }, 220);
+  }
+
+  function closePanel() {
+    isOpen = false;
+    panel.classList.remove('cw-open');
+    root.classList.remove('cw-is-open');
+    launcher.setAttribute('aria-expanded', 'false');
+    launcher.setAttribute('aria-label', 'Open support chat');
+    setTimeout(function () { panel.hidden = true; }, 200);
+  }
+
+  launcher.addEventListener('click', function () { isOpen ? closePanel() : openPanel(); });
+  closeBtn.addEventListener('click', closePanel);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && isOpen) closePanel();
+  });
+
+  // Hero "Talk to an Advisor" button opens the same widget — a realistic
+  // example of triggering the chat from a CTA elsewhere on the page.
+  var advisorBtn = document.getElementById('ap-talk-advisor');
+  if (advisorBtn) advisorBtn.addEventListener('click', openPanel);
+
+  setTimeout(function () {
+    if (isOpen) return;
+    proactive.hidden = false;
+    requestAnimationFrame(function () { proactive.classList.add('cw-show'); });
+    badge.hidden = false;
+  }, 3000);
+
+  function hideProactive() {
+    proactive.classList.remove('cw-show');
+    setTimeout(function () { proactive.hidden = true; }, 200);
+  }
+  proactiveClose.addEventListener('click', function (e) { e.stopPropagation(); hideProactive(); });
+  proactive.addEventListener('click', openPanel);
+
+  /* ---- Messaging ---- */
+  function addMessage(text, sender) {
+    var el = document.createElement('div');
+    el.className = 'cw-msg cw-msg-' + sender;
+    el.textContent = text;
+    messagesEl.appendChild(el);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function showTyping() {
+    var el = document.createElement('div');
+    el.className = 'cw-msg cw-msg-bot cw-typing';
+    el.id = 'cw-typing';
+    el.innerHTML = '<span></span><span></span><span></span>';
+    messagesEl.appendChild(el);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function hideTyping() {
+    var t = document.getElementById('cw-typing');
+    if (t) t.remove();
+  }
+
+  // Simulated ticket creation. Replace with a real call to your
+  // ticketing system (e.g. Salesforce Case API) — return the real
+  // ticket ID from the response instead of generating one locally.
+  function ticketMessage(team) {
+    var id = 'ALN-' + Math.floor(100000 + Math.random() * 900000);
+    return "I've created ticket #" + id + " and routed it to " + team + ". They'll follow up with you shortly.";
+  }
+
+  function playQueue(messages, onDone) {
+    if (!messages.length) { if (onDone) onDone(); return; }
+    showTyping();
+    var delay = 500 + Math.random() * 500;
+    setTimeout(function () {
+      hideTyping();
+      addMessage(messages[0], 'bot');
+      playQueue(messages.slice(1), onDone);
+    }, delay);
+  }
+
+  function renderOptions(options) {
+    quickRow.innerHTML = '';
+    if (!options || !options.length) { quickRow.hidden = true; return; }
+    quickRow.hidden = false;
+    options.forEach(function (opt) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cw-chip';
+      btn.textContent = opt.label;
+      btn.addEventListener('click', function () {
+        addMessage(opt.label, 'user');
+        goToNode(opt.next);
+      });
+      quickRow.appendChild(btn);
+    });
+  }
+
+  function goToNode(id) {
+    var node = flow[id];
+    if (!node) return;
+    currentNode = id;
+    renderOptions([]);
+    var queue = node.bot.slice();
+    if (node.escalate) queue.push(ticketMessage(node.escalate));
+    playQueue(queue, function () { renderOptions(node.options || []); });
+  }
+
+  // First load: show the greeting immediately, no typing delay.
+  addMessage(flow.root.bot[0], 'bot');
+  renderOptions(flow.root.options);
+  currentNode = 'root';
+
+  var GREETING_RE = /^(hi+|hello+|hey+|yo|namaste|good\s*(morning|afternoon|evening))\b/i;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var val = input.value;
+    if (!val.trim()) return;
+    addMessage(val, 'user');
+    input.value = '';
+    sendBtn.disabled = true;
+
+    var node = flow[currentNode];
+
+    // Greeting, anywhere in the flow → reset to the main menu.
+    if (GREETING_RE.test(val.trim())) {
+      showTyping();
+      setTimeout(function () {
+        hideTyping();
+        addMessage(flow.root.bot[0], 'bot');
+        currentNode = 'root';
+        renderOptions(flow.root.options);
+      }, 600);
+      return;
+    }
+
+    // Node is waiting on free-form details (order ID, address, etc.)
+    if (node && node.collect) {
+      showTyping();
+      setTimeout(function () {
+        hideTyping();
+        addMessage(ticketMessage(node.escalate), 'bot');
+        renderOptions(node.options || flow.root.options);
+      }, 700);
+      return;
+    }
+
+    // Anything else — nudge back to the visible menu options.
+    showTyping();
+    setTimeout(function () {
+      hideTyping();
+      addMessage("Thanks for the details! Let's narrow this down using the options below.", 'bot');
+      renderOptions(node && node.options && node.options.length ? node.options : flow.root.options);
+    }, 700);
+  });
+
+  input.addEventListener('input', function () {
+    sendBtn.disabled = !input.value.trim();
+  });
+})();
+</script>
+
+</body>
+</html>
